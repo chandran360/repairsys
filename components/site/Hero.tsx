@@ -1,13 +1,8 @@
 'use client';
 
-import dynamic from 'next/dynamic';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { scrollToId } from '@/hooks/use-lenis';
-
-const HeroCanvas = dynamic(() => import('@/components/three/HeroCanvas'), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0" />,
-});
+import HeroParallax from '@/components/site/HeroParallax';
 
 export default function Hero() {
   return (
@@ -58,9 +53,9 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* Right: 3D Canvas with image */}
+        {/* Right: 3D Parallax visual */}
         <div className="lg:w-1/2 w-full reveal relative" style={{ height: '520px' }}>
-          <HeroCanvas />
+          <HeroParallax />
         </div>
       </div>
 

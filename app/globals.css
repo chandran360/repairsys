@@ -318,3 +318,330 @@ body.has-custom-cursor [role="button"] {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ============================================================
+   Hero 3D Parallax
+   All classes prefixed hero-parallax-* to avoid conflicts.
+   ============================================================ */
+
+/* Perspective container — creates the 3D viewport */
+.hero-parallax-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+}
+
+/* 3D scene — rotates on mouse, holds all layers */
+.hero-parallax-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Base layer styles */
+.hero-parallax-layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  pointer-events: none;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Ambient glow — soft radial behind the image */
+.hero-parallax-ambient {
+  position: absolute;
+  inset: -50px;
+  background: radial-gradient(
+    ellipse at 55% 45%,
+    rgba(14, 124, 134, 0.12) 0%,
+    rgba(30, 86, 160, 0.06) 35%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.dark .hero-parallax-ambient {
+  background: radial-gradient(
+    ellipse at 55% 45%,
+    rgba(20, 160, 172, 0.1) 0%,
+    rgba(45, 111, 196, 0.05) 35%,
+    transparent 70%
+  );
+}
+
+/* ── Background depth layer ── */
+.hero-parallax-layer--bg {
+  filter: blur(4px) saturate(1.2);
+  opacity: 0.45;
+  z-index: 1;
+}
+.hero-parallax-layer--bg .hero-parallax-img {
+  transform: scale(1.1);
+}
+
+/* ── Main image layer ── */
+.hero-parallax-layer--main {
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+/* Shared image styles */
+.hero-parallax-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+  user-select: none;
+  -webkit-user-drag: none;
+  clip-path: inset(1.8% round 20px);
+}
+
+/* Remove unnecessary scale */
+.hero-parallax-layer--main .hero-parallax-img {
+  transform: none;
+}
+
+/* Premium shadow on main image layer (applied to container so it doesn't get clipped by overflow:hidden) */
+.hero-parallax-layer--main {
+  box-shadow:
+    0 25px 60px -12px rgba(14, 124, 134, 0.18),
+    0 10px 28px -8px rgba(0, 0, 0, 0.1);
+}
+.dark .hero-parallax-layer--main {
+  box-shadow:
+    0 25px 60px -12px rgba(20, 160, 172, 0.12),
+    0 10px 28px -8px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Mouse-following light reflection ── */
+.hero-parallax-reflection {
+  z-index: 3;
+  border-radius: 20px;
+  mix-blend-mode: soft-light;
+}
+
+/* ── Animated light sweep ── */
+.hero-parallax-sweep {
+  z-index: 4;
+  overflow: hidden;
+  border-radius: 20px;
+}
+.hero-parallax-sweep::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 60%
+  );
+  animation: hero-parallax-light-sweep 8s ease-in-out infinite;
+}
+.dark .hero-parallax-sweep::before {
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.03) 45%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 55%,
+    transparent 60%
+  );
+}
+
+@keyframes hero-parallax-light-sweep {
+  0%   { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(350%) rotate(25deg); }
+}
+
+/* ── Floating glass cards ── */
+.hero-parallax-card-wrap {
+  position: absolute;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.hero-parallax-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: var(--glass);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 8px 32px -8px rgba(14, 124, 134, 0.15),
+    0 2px 8px -2px rgba(0, 0, 0, 0.06);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: nowrap;
+  user-select: none;
+}
+.dark .hero-parallax-card {
+  box-shadow:
+    0 8px 32px -8px rgba(20, 160, 172, 0.12),
+    0 2px 8px -2px rgba(0, 0, 0, 0.25);
+}
+
+.hero-parallax-card-icon {
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+}
+
+/* Staggered floating animation per card */
+.hero-parallax-card--1 {
+  animation: hero-parallax-card-float 6s ease-in-out infinite;
+}
+.hero-parallax-card--2 {
+  animation: hero-parallax-card-float 7s ease-in-out 1s infinite;
+}
+.hero-parallax-card--3 {
+  animation: hero-parallax-card-float 5.5s ease-in-out 0.5s infinite;
+}
+
+@keyframes hero-parallax-card-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+/* ── Floating particles ── */
+.hero-parallax-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateZ(30px);
+}
+
+.hero-parallax-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  animation: hero-parallax-dot-float linear infinite;
+}
+
+@keyframes hero-parallax-dot-float {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  8%   { opacity: 0.35; }
+  92%  { opacity: 0.35; }
+  100% { transform: translateY(-70px) scale(0.3); opacity: 0; }
+}
+
+/* ── Depth shadow beneath image ── */
+.hero-parallax-shadow {
+  position: absolute;
+  bottom: -8px;
+  left: 12%;
+  right: 12%;
+  height: 28px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(14, 124, 134, 0.1) 0%,
+    transparent 70%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+  z-index: 0;
+}
+.dark .hero-parallax-shadow {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(20, 160, 172, 0.08) 0%,
+    transparent 70%
+  );
+}
+
+/* ── Responsive: Tablet ── */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .hero-parallax-wrapper {
+    perspective: 1600px; /* softer depth on tablet */
+  }
+  .hero-parallax-card {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+}
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 767px) {
+  .hero-parallax-wrapper {
+    perspective: none;
+  }
+  .hero-parallax-scene {
+    transform-style: flat !important;
+    transform: none !important;
+  }
+  .hero-parallax-layer--bg {
+    display: none; /* save resources */
+  }
+  .hero-parallax-card-wrap {
+    display: block;
+    scale: 0.85; /* make cards slightly smaller on mobile */
+  }
+  .hero-parallax-card-wrap:has(.hero-parallax-card--1) {
+    right: 3% !important;
+    top: 8% !important;
+  }
+  .hero-parallax-card-wrap:has(.hero-parallax-card--2) {
+    right: 1% !important;
+    top: 46% !important;
+  }
+  .hero-parallax-card-wrap:has(.hero-parallax-card--3) {
+    display: none !important; /* hide 100+ parts card to keep layout clean */
+  }
+  .hero-parallax-card {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
+  .hero-parallax-dots {
+    transform: none;
+  }
+  .hero-parallax-ambient {
+    inset: -20px;
+  }
+  .hero-parallax-shadow {
+    left: 18%;
+    right: 18%;
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .hero-parallax-scene {
+    transform: none !important;
+  }
+  .hero-parallax-layer {
+    transform: none !important;
+  }
+  .hero-parallax-card-wrap {
+    transform: none !important;
+  }
+  .hero-parallax-sweep::before {
+    animation: none !important;
+  }
+  .hero-parallax-card--1,
+  .hero-parallax-card--2,
+  .hero-parallax-card--3 {
+    animation: none !important;
+  }
+  .hero-parallax-dot {
+    animation: none !important;
+    opacity: 0.2;
+  }
+}

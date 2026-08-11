@@ -60,9 +60,6 @@ export default function Navbar() {
           onClick={() => go('home')}
           className="flex items-center gap-2.5 font-display font-semibold tracking-tight text-[var(--ink)]"
         >
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl ink-gradient text-white text-sm font-bold shadow-lg shadow-[#0e7c86]/20">
-            R
-          </span>
           <span className="text-lg">RepairSync</span>
         </button>
 
