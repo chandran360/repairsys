@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { scrollToId } from '@/hooks/use-lenis';
+import { PaymentModal } from './PaymentModal';
 
 const PLANS = [
   {
@@ -113,7 +114,7 @@ export default function Pricing() {
   const [period, setPeriod] = useState<'month' | 'year'>('month');
 
   return (
-    <section id="pricing" className="relative py-16 sm:py-24">
+    <section id="pricing" className="relative pt-8 pb-16 sm:pt-12 sm:pb-24">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <p className="reveal text-xs uppercase tracking-[0.3em] text-[var(--accent)] mb-4">
@@ -174,7 +175,7 @@ export default function Pricing() {
                 </div>
 
                 {p.popular && (
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full ink-gradient px-3 py-1 text-[11px] font-semibold text-blck shadow-lg">
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold text-blck shadow-lg bg-white shadow-lg shadow-[#0e7c86]/10">
                     <Sparkles size={12} /> Most Popular
                   </div>
                 )}
@@ -216,15 +217,22 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <button
-                  onClick={() => scrollToId(p.ctaTarget)}
-                  className={`w-full rounded-full py-3 text-sm font-medium transition-transform hover:scale-[1.02] ${p.popular
-                    ? 'ink-gradient text-black shadow-lg shadow-[#0e7c86]/25'
-                    : 'glass text-[var(--ink)]'
-                    }`}
+                <PaymentModal
+                  planName={p.name}
+                  sub={p.sub}
+                  price={period === 'month' ? p.monthlyPrice : p.yearlyPrice}
+                  period={period}
+                  features={p.features}
                 >
-                  {p.cta}
-                </button>
+                  <button
+                    className={`w-full rounded-full py-3 text-sm font-medium transition-transform hover:scale-[1.02] ${p.popular
+                      ? 'bg-white text-black shadow-lg shadow-[#0e7c86]/10'
+                      : 'glass text-[var(--ink)]'
+                      }`}
+                  >
+                    {p.cta}
+                  </button>
+                </PaymentModal>
               </div>
             ))}
           </div>

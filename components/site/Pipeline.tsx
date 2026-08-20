@@ -1,136 +1,222 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Check } from 'lucide-react';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const STAGES = [
+type Stage = {
+  n: string;
+  title: React.ReactNode;
+  desc: React.ReactNode;
+  bullets: {
+    icon: React.ReactNode;
+    text: React.ReactNode;
+  }[];
+  bulletsGrid?: boolean;
+  media: {
+    type: 'image' | 'video';
+    src: string;
+  };
+};
+
+const STAGES: Stage[] = [
   {
     n: '01',
-    title: 'Received',
-    desc: 'The device is logged and a ticket is created the moment it comes through the door. Every detail — model, condition, reported issue — is recorded so nothing gets lost between intake and diagnosis.',
+    title: 'Intake: Received & Logged',
+    desc: 'The moment a device comes through the door, a comprehensive ticket is created to capture every detail.',
+    bullets: [
+      {
+        icon: <Check className="w-5 h-5 text-orange-500" />,
+        text: <><strong className="text-[#111111] font-semibold">Record instantly</strong> — model, condition, and reported issue.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-orange-500" />,
+        text: <><strong className="text-[#111111] font-semibold">Digital receipts</strong> sent straight to the customer&apos;s phone.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-orange-500" />,
+        text: <><strong className="text-[#111111] font-semibold">Bulletproof tracking</strong> so nothing gets lost before diagnosis.</>,
+      },
+    ],
+    media: {
+      type: 'image',
+      src: 'https://res.cloudinary.com/defqgygsf/image/upload/v1787213134/091_ooxoiw.png',
+    },
   },
   {
     n: '02',
-    title: 'Diagnosing',
-    desc: 'A technician runs a full check to pin down exactly what is wrong. This step is about certainty: no guesswork, no unnecessary parts, just a clear read on what the device actually needs.',
+    title: 'Precision Diagnosing',
+    desc: 'A technician runs a full check to pin down exactly what is wrong. No guesswork, just absolute certainty.',
+    bulletsGrid: true,
+    bullets: [
+      {
+        icon: <Check className="w-5 h-5 text-purple-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Full diagnostic checks</strong> logged centrally.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-purple-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Identify parts</strong> needed without delay.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-purple-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Add tech notes</strong> hidden from the customer.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-purple-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Attach photos</strong> of internal damage.</>,
+      },
+    ],
+    media: {
+      type: 'image',
+      src: 'https://res.cloudinary.com/defqgygsf/image/upload/v1787213134/809_rbuvw3.png',
+    },
   },
   {
     n: '03',
-    title: 'Awaiting approval',
-    desc: 'A quote is shared and work only begins once the customer confirms. No surprise charges, no assumptions — the price and the fix are agreed on before a single part is touched.',
+    title: 'Awaiting Approval',
+    desc: 'A quote is shared and work only begins once the customer confirms. No surprise charges or assumptions.',
+    bullets: [
+      {
+        icon: <Check className="w-5 h-5 text-emerald-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Send automated quotes</strong> directly via WhatsApp.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-emerald-600" />,
+        text: <><strong className="text-[#111111] font-semibold">One-tap approval</strong> for the customer on their phone.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-emerald-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Locked-in pricing</strong> agreed upon before any part is touched.</>,
+      },
+    ],
+    media: {
+      type: 'image',
+      src: 'https://res.cloudinary.com/defqgygsf/image/upload/v1787214064/8120_hqhqrd.png',
+    },
   },
   {
     n: '04',
-    title: 'Repairing',
-    desc: 'The actual work happens here. Parts are replaced, boards are reworked, and every fix is done to the standard the ticket promised, tracked step by step until it is complete.',
+    title: 'Active Repairing',
+    desc: 'The actual work happens here. Tracked step by step until the fix is completed to the highest standard.',
+    bulletsGrid: true,
+    bullets: [
+      {
+        icon: <Check className="w-5 h-5 text-blue-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Track repair time</strong> automatically.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-blue-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Consume inventory</strong> parts dynamically.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-blue-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Update internal status</strong> across the shop.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-blue-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Assign technicians</strong> to specific jobs.</>,
+      },
+    ],
+    media: {
+      type: 'image',
+      src: 'https://res.cloudinary.com/defqgygsf/image/upload/v1787214770/810_s6lqmp.png',
+    },
   },
   {
     n: '05',
-    title: 'Ready',
-    desc: 'Once repairs pass a final check, the customer is notified straight away on WhatsApp — no waiting around, no chasing for updates on when to collect the device.',
+    title: 'Ready for Pickup',
+    desc: 'Once repairs pass a final check, the customer is notified straight away on WhatsApp — no waiting around.',
+    bullets: [
+      {
+        icon: <Check className="w-5 h-5 text-amber-500" />,
+        text: <><strong className="text-[#111111] font-semibold">Automated WhatsApp ping</strong> sent the second it is marked ready.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-amber-500" />,
+        text: <><strong className="text-[#111111] font-semibold">Quality assurance</strong> checklist verification.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-amber-500" />,
+        text: <><strong className="text-[#111111] font-semibold">No customer chasing</strong> or endless phone calls.</>,
+      },
+    ],
+    media: {
+      type: 'image',
+      src: 'https://res.cloudinary.com/defqgygsf/image/upload/v1787214064/7281_x4mfmg.png',
+    },
   },
   {
     n: '06',
-    title: 'Delivered',
-    desc: 'The device is handed back, the ticket is closed, and billing is settled. The pipeline resets, ready for the next device that comes through the door.',
+    title: 'Delivered & Settled',
+    desc: 'The device is handed back, the ticket is closed, and billing is settled. Ready for the next device.',
+    bulletsGrid: true,
+    bullets: [
+      {
+        icon: <Check className="w-5 h-5 text-rose-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Generate final invoices</strong> instantly.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-rose-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Multi-mode payments</strong> supported natively.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-rose-600" />,
+        text: <><strong className="text-[#111111] font-semibold">One-click ticket closure</strong> to keep the board clean.</>,
+      },
+      {
+        icon: <Check className="w-5 h-5 text-rose-600" />,
+        text: <><strong className="text-[#111111] font-semibold">Review requests</strong> sent out automatically.</>,
+      },
+    ],
+    media: {
+      type: 'image',
+      src: 'https://res.cloudinary.com/defqgygsf/image/upload/v1787214064/671_rrjigy.png',
+    },
   },
 ];
 
-const STAGE_H = '78vh';
-const GAP = '2rem';
-
 export default function Pipeline() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [active, setActive] = useState(0);
-
-  // IntersectionObserver doesn't fire reliably inside a GSAP-pinned section,
-  // so we manually add `is-in` to heading reveals as soon as the component mounts.
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const reveals = section.querySelectorAll<HTMLElement>('.reveal');
-    // Short delay so the element is painted before the transition fires
-    const t = setTimeout(() => {
-      reveals.forEach((el) => el.classList.add('is-in'));
-    }, 80);
-    return () => clearTimeout(t);
-  }, []);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const track = trackRef.current;
-      const section = sectionRef.current;
-      const stage = stageRef.current;
-      if (!track || !section || !stage) return;
+      // Add a cool 3D scale-down effect for cards as they get covered
+      cardsRef.current.forEach((card, i) => {
+        if (!card) return;
 
-      // panel height + gap always equals stage.clientHeight by design, so each
-      // panel's "top" sits at an exact multiple of stage.clientHeight. Deriving
-      // distance from that (instead of track.scrollHeight - stage.clientHeight)
-      // avoids the ~GAP drift that was pulling cards off center.
-      const getDistance = () => (STAGES.length - 1) * stage.clientHeight;
+        if (i < cardsRef.current.length - 1) {
+          const nextCard = cardsRef.current[i + 1];
+          if (!nextCard) return;
 
-      const tween = gsap.to(track, {
-        y: () => -getDistance(),
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => `+=${getDistance()}`,
-          scrub: true, // tied 1:1 to scroll position — no lag, no motion once you stop scrolling
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          // no `snap` here on purpose — snapping animates the track on its own
-          // once you release the scroll, which read as the section "auto sliding".
-          // Content now only ever moves while the user is actively scrolling.
-          onUpdate: (self) => {
-            if (lineRef.current) {
-              lineRef.current.style.transform = `scaleY(${self.progress})`;
+          gsap.to(card, {
+            scale: 0.92,
+            opacity: 0.4,
+            transformOrigin: 'top center',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: nextCard,
+              start: 'top bottom', // when the top of the NEXT card hits the bottom of the viewport
+              end: 'top 15%',      // when the top of the NEXT card reaches near its sticky position
+              scrub: true,
             }
-
-            const idx = Math.round(self.progress * (STAGES.length - 1));
-            setActive((prev) => (prev === idx ? prev : idx));
-
-            const stageRect = stage.getBoundingClientRect();
-            const stageCenter = stageRect.top + stageRect.height / 2;
-
-            panelRefs.current.forEach((panel) => {
-              if (!panel) return;
-              const rect = panel.getBoundingClientRect();
-              const center = rect.top + rect.height / 2;
-              const dist = Math.abs(center - stageCenter);
-              const t = Math.min(1, dist / (stageRect.height * 0.8));
-              panel.style.opacity = `${1 - t * 0.9}`;
-              panel.style.transform = `translateY(${t * 26}px)`;
-            });
-          },
-        },
+          });
+        }
       });
-
-      return () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
-      };
-    }, sectionRef);
+    }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <section
-      id="how"
-      ref={sectionRef}
-      className="relative py-16 sm:py-24 overflow-hidden"
-    >
+    <section id="features" className="relative py-24 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto">
+
+      {/* Restored Main Heading */}
       <div className="mx-auto max-w-6xl px-5 sm:px-8 mb-14">
         <p className="reveal text-xs uppercase tracking-[0.3em] text-[var(--accent)] mb-4">
           How It Works
@@ -141,75 +227,75 @@ export default function Pipeline() {
         </h2>
       </div>
 
-      <div
-        ref={stageRef}
-        className="relative w-full overflow-hidden"
-        style={{ height: STAGE_H }}
-      >
-        {/* progress line down the left edge of the stage */}
-        <div className="pointer-events-none absolute top-8 bottom-8 left-5 sm:left-8 w-px bg-[var(--ink)]/10 z-10">
+      <div ref={containerRef} className="flex flex-col gap-12 sm:gap-24 relative pb-24">
+        {STAGES.map((s, i) => (
           <div
-            ref={lineRef}
-            className="w-full ink-gradient origin-top scale-y-0"
-          />
-        </div>
+            key={i}
+            ref={(el) => {
+              cardsRef.current[i] = el;
+            }}
+            // Removed the `+ i * 20` offset so cards stack perfectly on top of each other
+            className="sticky w-full rounded-[2.5rem] sm:rounded-[3rem] overflow-hidden border border-slate-200 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] flex flex-col lg:flex-row items-center will-change-transform bg-white"
+            style={{
+              top: '12vh',
+              height: '75vh',
+              zIndex: i,
+            }}
+          >
+            {/* Left Content */}
+            <div className="w-full lg:w-1/2 p-8 sm:p-12 lg:p-20 flex flex-col justify-center h-full bg-white relative z-10">
 
-        <div
-          ref={trackRef}
-          className="flex flex-col will-change-transform"
-          style={{ gap: GAP }}
-        >
-          {STAGES.map((s, i) => (
-            <div
-              key={i}
-              ref={(el) => {
-                panelRefs.current[i] = el;
-              }}
-              className="w-full shrink-0 will-change-transform"
-              style={{ height: `calc(${STAGE_H} - ${GAP})` }}
-            >
-              <div className="mx-auto grid h-full max-w-6xl grid-cols-1 items-center gap-x-16 gap-y-6 px-5 sm:px-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-                {/* left: ghost number + title, stacked like a stamp */}
-                <div className="relative">
-                  <span className="pointer-events-none block font-display text-[7rem] sm:text-[9rem] font-bold leading-none text-[var(--ink)]/[0.07] select-none">
-                    {s.n}
-                  </span>
-                  <h3 className="font-display font-semibold text-3xl sm:text-4xl text-[var(--ink)] -mt-6 sm:-mt-8">
-                    {s.title}
-                  </h3>
-                </div>
+              {/* Ghost Number Added Back */}
+              <span className="pointer-events-none block font-display text-[7rem] sm:text-[9rem] font-bold leading-none text-slate-900/[0.04] select-none -mb-6 sm:-mb-8">
+                {s.n}
+              </span>
 
-                {/* right: description */}
-                <p className="body-copy text-base sm:text-lg leading-relaxed text-[var(--ink-soft)] max-w-xl">
-                  {s.desc}
-                </p>
+              <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-[#111111] tracking-tight mb-6 leading-[1.1]">
+                {s.title}
+              </h2>
+              <p className="text-lg sm:text-xl text-[#6B7280] mb-10 lg:mb-12 max-w-md leading-relaxed">
+                {s.desc}
+              </p>
+
+              <div className={`grid gap-6 ${s.bulletsGrid ? 'sm:grid-cols-2 gap-x-6 gap-y-6' : 'grid-cols-1 max-w-lg'}`}>
+                {s.bullets.map((b, idx) => (
+                  <div key={idx} className="flex items-start gap-4">
+                    <div className="mt-1 shrink-0 bg-slate-50 rounded-md p-1 border border-slate-200 shadow-sm">
+                      {b.icon}
+                    </div>
+                    <p className="text-[15px] sm:text-base text-[#6B7280] leading-snug">
+                      {b.text}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* stage dots, stacked vertically on the right, synced to active panel */}
-        <div className="absolute right-6 sm:right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-3 z-10">
-          {STAGES.map((s, i) => (
-            <span
-              key={s.n}
-              className="rounded-full transition-all duration-300"
-              style={{
-                height: i === active ? '28px' : '6px',
-                width: '6px',
-                background:
-                  i === active
-                    ? 'var(--accent)'
-                    : 'color-mix(in srgb, var(--ink) 20%, transparent)',
-              }}
-            />
-          ))}
-        </div>
+            {/* Right Media */}
+            <div className="w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 flex items-center justify-center relative z-0 min-h-[40vh] lg:min-h-full lg:self-stretch bg-slate-50/50">
+              <div className="relative w-full max-w-lg aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border border-slate-200 bg-white transform transition-transform hover:scale-[1.02] duration-500">
+                {s.media.type === 'image' ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={s.media.src}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <video
+                    src={s.media.src}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-
-      <p className="text-center text-xs text-[var(--ink-muted)] mt-8">
-        Scroll to move through the pipeline
-      </p>
     </section>
   );
 }

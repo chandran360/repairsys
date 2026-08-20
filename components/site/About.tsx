@@ -55,18 +55,14 @@ export default function About() {
                     'radial-gradient(80% 60% at 50% 40%, rgba(14,124,134,0.10), transparent 60%)',
                 }}
               />
-              <div className="relative flex flex-col items-center gap-4 text-center px-6">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full ink-gradient text-white shadow-xl shadow-[#0e7c86]/30">
-                  <Play size={26} className="ml-1" />
-                </div>
-                <p className="text-sm font-medium text-[var(--ink)]">
-                  Create a ticket in under a minute
-                </p>
-                <p className="text-xs text-[var(--ink-muted)] max-w-xs">
-                  Looping screen recording placeholder — a short GIF of creating
-                  a repair ticket goes here.
-                </p>
-              </div>
+              <video
+                src="https://res.cloudinary.com/defqgygsf/video/upload/v1787217221/Initial_Scene_-_2026-08-20_202608201422_gwr_video_mvp_kjryur.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+              />
             </div>
             {/* floating accent tag */}
             <div className="rs-bob absolute -top-4 -right-2 glass-strong rounded-full px-4 py-2 text-xs font-medium text-[var(--ink)] shadow-lg">

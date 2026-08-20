@@ -17,10 +17,7 @@ import {
 import { supabase } from '@/lib/supabase';
 import { WHATSAPP_URL } from '@/lib/three-context';
 
-const ContactCanvas = dynamic(() => import('@/components/three/ContactCanvas'), {
-  ssr: false,
-  loading: () => <div className="absolute inset-0" />,
-});
+
 
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
@@ -44,7 +41,7 @@ export default function Contact() {
       shop_name: (fd.get('shop_name') as string)?.trim(),
       phone: (fd.get('phone') as string)?.trim(),
       email: (fd.get('email') as string)?.trim() || null,
-      staff_count: (fd.get('staff_count') as string)?.trim(),
+      location: (fd.get('location') as string)?.trim(),
       message: (fd.get('message') as string)?.trim() || null,
     };
 
@@ -52,17 +49,32 @@ export default function Contact() {
     if (!data.name) newErrors.name = 'Your name is required';
     if (!data.shop_name) newErrors.shop_name = 'Shop name is required';
     if (!data.phone) newErrors.phone = 'Phone / WhatsApp is required';
-    if (!data.staff_count) newErrors.staff_count = 'Please select a staff size';
+    if (!data.location) newErrors.location = 'Location is required';
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
     setStatus('loading');
     try {
       const { error } = await supabase.from('demo_requests').insert(data);
-      if (error) throw error;
+      if (error) {
+        console.warn('Database save failed (table might be missing), but continuing to send email:', error);
+      }
+
+      // Send email
+      const emailRes = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!emailRes.ok) {
+        throw new Error('Failed to send email');
+      }
+
       setStatus('success');
       form.reset();
     } catch (err) {
+      console.error(err);
       setStatus('error');
     }
   };
@@ -85,12 +97,13 @@ export default function Contact() {
               through RepairSync for your shop.
             </p>
 
-            {/* 3D phone */}
-            <div className="reveal relative h-[340px] sm:h-[400px] mb-8">
-              <ContactCanvas />
-              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.25em] text-[var(--ink-muted)]">
-                Drag to rotate
-              </div>
+            {/* 3D Technician Mascot Image */}
+            <div className="reveal relative w-full mb-2 lg:mb-12 flex items-center justify-center pointer-events-none">
+              <img
+                src="/images/contact_technician_3d.jpg"
+                alt="3D Repair Technician"
+                className="w-full h-auto max-h-[450px] object-contain rounded-3xl"
+              />
             </div>
 
             <div className="reveal flex flex-col sm:flex-row gap-3">
@@ -110,8 +123,8 @@ export default function Contact() {
           </div>
 
           {/* right: form */}
-          <div className="reveal relative">
-            <div className="glass-strong rounded-3xl p-7 sm:p-9">
+          <div className="reveal relative mt-8">
+            <div className="glass-strong  rounded-3xl p-7  sm:p-9">
               {status === 'success' ? (
                 <div className="text-center py-10">
                   <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--accent)] mb-5">
@@ -204,24 +217,19 @@ export default function Contact() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-[var(--ink)]">
-                      Number of staff{' '}
+                    <Label htmlFor="location" className="text-[var(--ink)]">
+                      Location{' '}
                       <span className="text-[var(--accent)]">*</span>
                     </Label>
-                    <Select name="staff_count">
-                      <SelectTrigger className="bg-white/70">
-                        <SelectValue placeholder="Select staff size" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="1-2">1–2</SelectItem>
-                        <SelectItem value="3-5">3–5</SelectItem>
-                        <SelectItem value="6-10">6–10</SelectItem>
-                        <SelectItem value="10+">10+</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.staff_count && (
+                    <Input
+                      id="location"
+                      name="location"
+                      className="bg-white/70"
+                      placeholder="City or Address"
+                    />
+                    {errors.location && (
                       <p className="text-xs text-red-500">
-                        {errors.staff_count}
+                        {errors.location}
                       </p>
                     )}
                   </div>
@@ -258,7 +266,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={status === 'loading'}
-                    className="w-full inline-flex items-center justify-center gap-2 rounded-full ink-gradient px-6 py-3.5 text-sm font-medium text-black dark:text-white shadow-xl shadow-[#0e7c86]/25 transition-transform hover:scale-[1.02] disabled:opacity-60"
+                    className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-white  shadow-lg shadow-[#0e7c86]/10 px-6 py-3.5 text-sm font-medium text-black dark:text-white shadow-xl shadow-[#0e7c86]/25 transition-transform hover:scale-[1.02] disabled:opacity-60"
                   >
                     {status === 'loading' ? (
                       <>

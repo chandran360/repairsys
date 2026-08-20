@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Space_Grotesk, Inter } from 'next/font/google';
+import { AuthProvider } from '@/providers/AuthProvider';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -65,7 +66,9 @@ export default function RootLayout({
             />
           </>
         )}
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
