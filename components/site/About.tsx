@@ -4,7 +4,7 @@ import { Play } from 'lucide-react';
 
 export default function About() {
   return (
-    <section id="about" className="relative py-28 sm:py-36">
+    <section id="about" className="relative py-12 sm:py-36">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           {/* 3D-depth layered heading */}

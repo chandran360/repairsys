@@ -196,14 +196,13 @@ export default function Pipeline() {
 
           gsap.to(card, {
             scale: 0.92,
-            opacity: 0.4,
             transformOrigin: 'top center',
             ease: 'none',
             scrollTrigger: {
               trigger: nextCard,
               start: 'top bottom', // when the top of the NEXT card hits the bottom of the viewport
               end: 'top 15%',      // when the top of the NEXT card reaches near its sticky position
-              scrub: true,
+              scrub: 1, // Changed to 1 for smoother scrolling
             }
           });
         }
@@ -214,7 +213,7 @@ export default function Pipeline() {
   }, []);
 
   return (
-    <section id="features" className="relative py-24 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto">
+    <section id="features" className="relative py-12 sm:py-24 px-4 sm:px-6 lg:px-8 w-full max-w-7xl mx-auto">
 
       {/* Restored Main Heading */}
       <div className="mx-auto max-w-6xl px-5 sm:px-8 mb-14">
@@ -272,7 +271,7 @@ export default function Pipeline() {
             </div>
 
             {/* Right Media */}
-            <div className="w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 flex items-center justify-center relative z-0 min-h-[40vh] lg:min-h-full lg:self-stretch bg-slate-50/50">
+            <div className="hidden lg:flex w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 items-center justify-center relative z-0 min-h-[40vh] lg:min-h-full lg:self-stretch bg-slate-50/50">
               <div className="relative w-full max-w-lg aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border border-slate-200 bg-white transform transition-transform hover:scale-[1.02] duration-500">
                 {s.media.type === 'image' ? (
                   // eslint-disable-next-line @next/next/no-img-element

@@ -43,41 +43,7 @@ export default function Hero() {
     }
   }, [currentIndex, fullTextLength, isTyping]);
 
-  useEffect(() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) return;
-
-    let visible = true;
-
-    const applyScroll = () => {
-      if (!visible || !sectionRef.current || !textRef.current) return;
-      const rect = sectionRef.current.getBoundingClientRect();
-      if (rect.bottom < 0) return;
-      const progress = Math.max(0, Math.min(1, -rect.top / (window.innerHeight * 0.5)));
-      textRef.current.style.opacity = `${Math.max(0, 1 - progress * 1.5)}`;
-      textRef.current.style.transform = `translateY(${progress * -50}px)`;
-    };
-
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        if (!visible && textRef.current) {
-          textRef.current.style.opacity = '';
-          textRef.current.style.transform = '';
-        }
-      },
-      { threshold: 0 }
-    );
-    if (sectionRef.current) io.observe(sectionRef.current);
-
-    window.addEventListener('scroll', applyScroll, { passive: true });
-    applyScroll();
-
-    return () => {
-      window.removeEventListener('scroll', applyScroll);
-      io.disconnect();
-    };
-  }, []);
+  // Scroll effect removed so content stays visible when scrolling
 
   return (
     <section id="home" ref={sectionRef} className="hero-section">

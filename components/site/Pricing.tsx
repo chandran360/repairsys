@@ -15,11 +15,11 @@ const PLANS = [
   {
     name: 'Starter',
     sub: 'Single shop, 1–2 staff',
-    monthlyPrice: 499,
-    yearlyPrice: 399,
+    monthlyPrice: 5208,
+    yearlyPrice: 50000,
     cta: 'Start Free Trial',
     ctaTarget: 'contact',
-    popular: false,
+    popular: true,
     features: [
       { label: 'Repair ticket tracking', value: 'Yes' },
       { label: 'WhatsApp status updates', value: 'Limited / add-on' },
@@ -35,11 +35,11 @@ const PLANS = [
   {
     name: 'Growth',
     sub: 'Single shop, growing team',
-    monthlyPrice: 999,
-    yearlyPrice: 799,
+    monthlyPrice: 8333,
+    yearlyPrice: 80000,
     cta: 'Book a Demo',
     ctaTarget: 'contact',
-    popular: true,
+    popular: false,
     features: [
       { label: 'Repair ticket tracking', value: 'Yes' },
       { label: 'WhatsApp status updates', value: 'Yes' },
@@ -55,11 +55,11 @@ const PLANS = [
   {
     name: 'Pro',
     sub: 'Multi-shop operators',
-    monthlyPrice: 1999,
-    yearlyPrice: 1599,
+    monthlyPrice: 10417,
+    yearlyPrice: 100000,
     cta: 'Contact Sales',
     ctaTarget: 'contact',
-    popular: false,
+    popular: true,
     features: [
       { label: 'Repair ticket tracking', value: 'Yes' },
       { label: 'WhatsApp status updates', value: 'Yes' },
@@ -105,8 +105,8 @@ const TABLE_ROWS = PLANS[0].features.map((_, i) => ({
 }));
 
 function valueCell(v: string) {
-  if (v === 'Yes') return <Check size={16} className="text-[var(--accent)]" />;
-  if (v === 'No') return <Minus size={16} className="text-[var(--ink-muted)]" />;
+  if (v === 'Yes') return <Check size={16} className="mx-auto text-[var(--accent)]" />;
+  if (v === 'No') return <Minus size={16} className="mx-auto text-[var(--ink-muted)]" />;
   return <span className="text-sm text-[var(--ink-soft)]">{v}</span>;
 }
 
@@ -161,20 +161,14 @@ export default function Pricing() {
             {PLANS.map((p) => (
               <div
                 key={p.name}
-                className={`reveal relative glass rounded-3xl p-7 flex flex-col ${p.popular ? 'ring-2 ring-[var(--accent)] shadow-2xl' : ''
+                className={`reveal relative glass rounded-3xl p-7 flex flex-col transition-all duration-300 ${p.popular ? 'ring-2 ring-[var(--accent)] shadow-2xl md:scale-105 z-10' : 'md:scale-95 z-0 opacity-90 hover:opacity-100 hover:scale-100'
                   }`}
               >
-                {/* timeline dot */}
                 <div className="absolute -top-[7px] left-1/2 -translate-x-1/2 hidden md:block">
-                  <div
-                    className={`h-3.5 w-3.5 rounded-full ${p.popular
-                      ? 'ink-gradient'
-                      : 'bg-white border-2 border-[var(--accent)]/40'
-                      }`}
-                  />
+                  <div className="h-3.5 w-3.5 rounded-full " />
                 </div>
 
-                {p.popular && (
+                {!p.popular && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-semibold text-blck shadow-lg bg-white shadow-lg shadow-[#0e7c86]/10">
                     <Sparkles size={12} /> Most Popular
                   </div>
@@ -194,10 +188,10 @@ export default function Pricing() {
                     ₹{(period === 'month' ? p.monthlyPrice : p.yearlyPrice).toLocaleString('en-IN')}
                   </div>
                   <p className="text-xs text-[var(--ink-muted)] mt-1">
-                    per {period === 'month' ? 'month' : 'month, billed yearly'}
+                    {period === 'month' ? 'per month' : 'per year'}
                     {period === 'year' && (
                       <span className="ml-2 inline-block rounded-full bg-[var(--accent-soft)] text-[var(--accent)] px-2 py-0.5 text-[10px] font-semibold">
-                        Save {Math.round((1 - p.yearlyPrice / p.monthlyPrice) * 100)}%
+                        Save {Math.round((1 - p.yearlyPrice / (p.monthlyPrice * 12)) * 100)}%
                       </span>
                     )}
                   </p>
@@ -225,10 +219,7 @@ export default function Pricing() {
                   features={p.features}
                 >
                   <button
-                    className={`w-full rounded-full py-3 text-sm font-medium transition-transform hover:scale-[1.02] ${p.popular
-                      ? 'bg-white text-black shadow-lg shadow-[#0e7c86]/10'
-                      : 'glass text-[var(--ink)]'
-                      }`}
+                    className="w-full rounded-full py-3 text-sm font-medium transition-transform hover:scale-[1.02] bg-white text-black shadow-lg shadow-[#0e7c86]/10"
                   >
                     {p.cta}
                   </button>

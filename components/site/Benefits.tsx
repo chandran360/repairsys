@@ -35,7 +35,7 @@ const BENEFITS = [
 
 export default function Benefits() {
   return (
-    <section className="relative py-28 sm:py-36">
+    <section className="relative py-12 sm:py-36">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <p className="reveal text-xs uppercase tracking-[0.3em] text-[var(--accent)] mb-4">
