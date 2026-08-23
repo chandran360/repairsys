@@ -9,6 +9,7 @@ import Features from '@/components/site/Features';
 import About from '@/components/site/About';
 import Pipeline from '@/components/site/Pipeline';
 import Pricing from '@/components/site/Pricing';
+import SocialAutopilot from '@/components/site/SocialAutopilot';
 import Benefits from '@/components/site/Benefits';
 import Contact from '@/components/site/Contact';
 import Footer from '@/components/site/Footer';
@@ -44,6 +45,7 @@ export default function Home() {
         <Features />
         <About />
         <Pipeline />
+        <SocialAutopilot />
         <Pricing />
         <Benefits />
         <Contact />

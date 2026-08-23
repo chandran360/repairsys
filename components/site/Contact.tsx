@@ -81,7 +81,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="relative py-10 sm:py-24">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* left: copy + interactive 3D phone */}
           <div className="relative">

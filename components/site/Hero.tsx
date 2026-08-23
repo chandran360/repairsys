@@ -125,21 +125,9 @@ export default function Hero() {
         <div className="hero-visual-column reveal relative w-full flex justify-center mt-12 lg:mt-0 lg:w-[60%] pointer-events-none">
           <div className="absolute inset-0 bg-blue-500/10 dark:bg-blue-500/20 blur-[100px] rounded-full scale-75 -z-10" />
 
-          {/* Floating Card 1 */}
-          <div className="absolute left-0 lg:left-4 top-10 md:top-16 z-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
-            <div className="flex items-center gap-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-black/5 dark:border-white/10 shadow-xl rounded-xl px-4 py-3 pointer-events-auto hover:-translate-y-1 transition-transform">
-              <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                <UserCheck size={16} />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-slate-900 dark:text-white leading-tight">Technician Assigned</span>
-                <span className="text-[11px] text-slate-500 dark:text-slate-400">Assigned to Senior Tech</span>
-              </div>
-            </div>
-          </div>
 
-          {/* Floating Card 2 */}
-          <div className="absolute right-0 lg:right-4 top-4 md:top-8 z-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500 hidden sm:block">
+
+          <div className="absolute right-0 lg:right-4 -top-0 md:top-6 z-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
             <div className="flex items-center gap-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-black/5 dark:border-white/10 shadow-xl rounded-xl px-4 py-3 pointer-events-auto hover:-translate-y-1 transition-transform">
               <div className="w-8 h-8 rounded-full bg-[#25D366]/10 flex items-center justify-center text-[#25D366]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
@@ -153,9 +141,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Floating Card 3 */}
-          {/* Floating Card 3 - Secure Warranty */}
-          <div className="absolute left-0 lg:left-4 bottom-20 md:bottom-28 z-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700 hidden sm:block">
+          <div className="absolute left-0 lg:left-4 bottom-20 md:bottom-28 z-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-700">
             <div className="flex items-center gap-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-black/5 dark:border-white/10 shadow-xl rounded-xl px-4 py-3 pointer-events-auto hover:-translate-y-1 transition-transform">
               <div className="w-8 h-8 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center text-violet-600 dark:text-violet-400">
                 <ShieldCheck size={16} />
@@ -174,7 +160,7 @@ export default function Hero() {
           {/* Floating Card 4 */}
 
 
-          <div className="absolute left-0 lg:left-4 top-10 md:top-16 z-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+          <div className="absolute left-0 lg:left-4 top-20 md:top-16 z-20 animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
             <div className="flex items-center gap-3 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-black/5 dark:border-white/10 shadow-xl rounded-xl px-4 py-3 pointer-events-auto hover:-translate-y-1 transition-transform">
               <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center text-orange-600 dark:text-orange-400">
                 <Zap size={16} />

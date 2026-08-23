@@ -12,6 +12,7 @@ const LINKS = [
   { id: 'home', label: 'Home' },
   { id: 'features', label: 'Features' },
   { id: 'how', label: 'How It Works' },
+  { id: 'services', label: 'Services & Solutions' },
   { id: 'pricing', label: 'Pricing' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -142,7 +143,7 @@ export default function Navbar() {
             ))}
             <li>
               <div className="mt-2 flex items-center justify-between px-4 py-2">
-                <span className="text-base font-semibold text-[var(--ink-soft)]">Dark Mode</span>
+                {/* <span className="text-base font-semibold text-[var(--ink-soft)]">Dark Mode</span> */}
                 {/* <ThemeToggle /> */}
               </div>
             </li>
