@@ -13,6 +13,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { CreditCard, Loader2, Lock, CheckCircle2, Check, Minus, ChevronsUpDown } from 'lucide-react';
 import { Country, State } from 'country-state-city';
 import { cn } from '@/lib/utils';
+import { scrollToId } from '@/hooks/use-lenis';
 
 interface PlanFeature {
   label: string;
@@ -387,16 +388,27 @@ export function PaymentModal({ children, planName, sub, price, period, features 
 
                 <button
                   type="submit"
-                  disabled={loading || cardNumber.length < 19 || expiry.length < 5 || cvc.length < 3 || name.length < 2}
-                  className="mt-2 w-full rounded-xl flex items-center justify-center bg-white  shadow-lg shadow-[#0e7c86]/10 px-4 py-3.5 text-sm font-medium text-black dark:text-white shadow-xl shadow-[#0e7c86]/25 transition-transform hover:scale-[1.02] disabled:opacity-70 disabled:hover:scale-100"
+                  disabled={true}
+                  className="mt-2 w-full cursor-not-allowed rounded-xl flex items-center justify-center bg-[var(--surface)] border border-[var(--line)] shadow-sm px-4 py-3.5 text-sm font-medium text-[var(--ink-muted)] opacity-70"
                 >
-                  {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : (
-                    <span className="flex items-center gap-2">
-                      <Lock className="h-4 w-4" />
-                      Pay {formatCurrency(totalAmount)}
-                    </span>
-                  )}
+                  <span className="flex items-center gap-2">
+                    <Lock className="h-4 w-4" />
+                    Pay {formatCurrency(totalAmount)}
+                  </span>
                 </button>
+                <div className="mt-3 text-center text-sm text-[var(--ink-soft)]">
+                  Payment services not available.{' '}
+                  <button 
+                    type="button"
+                    onClick={() => {
+                      setIsOpen(false);
+                      setTimeout(() => scrollToId('contact'), 100);
+                    }} 
+                    className="text-[var(--accent)] hover:underline font-semibold"
+                  >
+                    Contact Us
+                  </button>
+                </div>
               </form>
             </div>
           </div>
